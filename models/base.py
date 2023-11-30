@@ -1,3 +1,5 @@
+# 參考https://github.com/zhoudw-zdw/MM21-Coil
+# 多數函式不須使用
 import copy
 import logging
 import numpy as np
