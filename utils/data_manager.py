@@ -5,42 +5,20 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from utils.data import  ITRI_GOODS
 seed = 1993
-# random.seed(seed)
 np.random.seed(seed)
-# torch.manual_seed(seed)
-# torch.cuda.manual_seed_all(seed)
+
 
 class DataManager(object):
     def __init__(self,   seed, init_cls, increment, longtail=0):
         self.dataset_name = "itri_goods"
         self._setup_data(self.dataset_name, 0, seed)
-        # assert init_cls <= len(self._class_order), 'No enough classes.'
-        # self._increments = [init_cls,init_cls]
-        
-        # while sum(self._increments) + increment <= len(self._class_order):
-        #     self._increments.append(increment)
-        
-        # offset = len(self._class_order) - sum(self._increments)
-        # if offset > 0:
-        #     self._increments.append(offset)
         self.longtail = longtail
         
         self.longtaillist = get_img_num_per_cls(1300, 100, 'exp', 0.1)
-
-    # @property
-    # def nb_tasks(self):
-    #     return len(self._increments)
-
-    # def get_task_size(self, task):
-    #     try:
-    #         a = self._increments[task]
-    #     except:
-    #         a = 1
-    #     return a
-
+    # 參考https://github.com/zhoudw-zdw/MM21-Coil 並修正
     def get_total_classnum(self):
         return len(self._class_order)
-
+    # 參考https://github.com/zhoudw-zdw/MM21-Coil 
     def get_dataset(self, indices, source, mode, appendent=None, ret_data=False):
         if source == 'train':
             x, y = self._train_data, self._train_targets
@@ -69,8 +47,6 @@ class DataManager(object):
             else:
                 data.append(class_data)
                 targets.append(class_targets)
-        
-        # return
         if appendent is not None and len(appendent) != 0:
             appendent_data, appendent_targets = appendent
             data.append(np.array(appendent_data).flatten())
