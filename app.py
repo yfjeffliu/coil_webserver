@@ -1,4 +1,4 @@
-# GET——傳參方式1
+# 自行撰寫之程式碼
 from flask import Flask, request
 from flask import send_file
 from flask import Flask, render_template
