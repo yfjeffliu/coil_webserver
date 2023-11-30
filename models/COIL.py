@@ -38,6 +38,8 @@ class COIL(BaseLearner):
         self.sinkhorn_reg=args['sinkhorn']
         self.calibration_term=args['calibration_term']
         self.args=args
+
+    # 自行產出程式碼
     def save_checkpoint(self):
         self._network.cpu()
         save_dict = {
@@ -50,11 +52,10 @@ class COIL(BaseLearner):
         # torch.save(save_dict, '{}_{}.pkl'.format(filename, self._cur_task))
         torch.save(save_dict,"COIL_model.pkl")
         # torch.save(self._network, filename)
+    # 自行產出程式碼
     def after_task(self):
-        print('after_task')
-        # self.nextperiod_initialization=self.solving_ot()
-        # self._old_network = self._network.copy().freeze()
         self._known_classes = self._total_classes
+    # 自行產出程式碼
     def before_task(self):
         self.nextperiod_initialization=self.solving_ot()
         if self.nextperiod_initialization is None:
@@ -63,20 +64,16 @@ class COIL(BaseLearner):
         self._known_classes = self._total_classes
         return 'good'
 
-       
+    # 參考https://github.com/zhoudw-zdw/MM21-Coil 並進行修正
     def solving_ot(self):
         with torch.no_grad():
             if self._total_classes==self.data_manager.get_total_classnum():
                 print('training over, no more ot solving')
                 return None
             cur_task_size = len(self.df) - self._known_classes
-            print(f'lengh of df: {len(self.df)}')
-            print(f'known_classes: {self._known_classes}')
             if cur_task_size <= 0:
                 return None
             each_time_class_num=cur_task_size
-            # print(f'each_time_class_num: {each_time_class_num}')
-            # print(f'total_classes: {self._total_classes}')
             self._extract_class_means(self.data_manager,0,self._total_classes)
             former_class_means=torch.tensor(self._ot_prototype_means[:self._total_classes])
             next_period_class_means=torch.tensor(self._ot_prototype_means[self._total_classes:self._total_classes+each_time_class_num])
@@ -86,8 +83,6 @@ class COIL(BaseLearner):
             _mu2_vec=torch.ones(len(next_period_class_means))/len(former_class_means)*1.0
             T=ot.sinkhorn(_mu1_vec,_mu2_vec,Q_cost_matrix,self.sinkhorn_reg) 
             T=T.clone().detach().float().cuda()
-
-            # print(self._network)
             transformed_hat_W=torch.mm(T.T,F.normalize(self._network.fc.weight, p=2, dim=1))
             oldnorm=(torch.norm(self._network.fc.weight,p=2,dim=1))
             newnorm=(torch.norm(transformed_hat_W*len(former_class_means),p=2,dim=1))
@@ -98,7 +93,7 @@ class COIL(BaseLearner):
             self._ot_new_branch=transformed_hat_W*len(former_class_means)*self.calibration_term
         return transformed_hat_W*len(former_class_means)*self.calibration_term
 
-
+    # 參考https://github.com/zhoudw-zdw/MM21-Coil
     def solving_ot_to_old(self):
         cur_task_size = len(self.df) - self._known_classes
         current_class_num=cur_task_size
@@ -113,11 +108,9 @@ class COIL(BaseLearner):
         transformed_hat_W=torch.mm(T.T,F.normalize(self._network.fc.weight[-current_class_num:,:], p=2, dim=1))
         return transformed_hat_W*len(former_class_means)*self.calibration_term
 
-
+    # 參考https://github.com/zhoudw-zdw/MM21-Coil
     def incremental_train(self, data_manager):
         self._cur_task += 1
-        print(self._cur_task)
-        print(self._known_classes)
         cur_task_size = len(self.df) - self._known_classes
         self._total_classes = self._known_classes + cur_task_size
         # print(f'total_classes: {self._total_classes}')
@@ -132,20 +125,19 @@ class COIL(BaseLearner):
         train_dataset = data_manager.get_dataset(np.arange(self._known_classes, self._total_classes), source='train',
                                                  mode='train', appendent=self._get_memory())
         self.train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=16)
-
         self._train(self.train_loader)
         self._reduce_exemplar(data_manager, memory_size//self._total_classes)
         self._construct_exemplar(data_manager, memory_size//self._total_classes)
-
+    # 參考https://github.com/zhoudw-zdw/MM21-Coil
     def _train(self, train_loader):
         self._network.to(self._device)
         if self._old_network is not None:
             self._old_network.to(self._device)
-        # optimizer = optim.SGD(self._network.parameters(), lr=lrate, momentum=0.9, weight_decay=5e-4)  # 1e-5
+        # 自行產出程式碼
         optimizer = optim.AdamW(self._network.parameters(), lr=lrate,weight_decay=5e-4)
         scheduler = optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones=milestones, gamma=lrate_decay)
         self._update_representation(train_loader,  optimizer, scheduler)
-
+    # 參考https://github.com/zhoudw-zdw/MM21-Coil
     def _update_representation(self, train_loader,  optimizer, scheduler):
         prog_bar = tqdm(range(epochs))
         for _, epoch in enumerate(prog_bar):
