@@ -1,3 +1,4 @@
+# 自行撰寫之程式碼
 import time
 def countdown():
     path = 'check_training.txt'
