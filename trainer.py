@@ -8,6 +8,7 @@ import pandas as pd
 from utils.toolkit import count_parameters
 
 def train(args):
+    # 參考https://github.com/zhoudw-zdw/MM21-Coil
     seed_list = copy.deepcopy(args['seed'])
     device = copy.deepcopy(args['device'])
     torch.manual_seed(0)
@@ -19,6 +20,7 @@ def train(args):
 
 
 def _train(args):
+    # 參考https://github.com/zhoudw-zdw/MM21-Coil
     longtail='Longtail' if args['longtail']==1 else 'Normal'
     logfilename = '{}_{}_{}_{}_{}_{}_{}'.format(args['seed'], args['model_name'], args['convnet_type'],
                                                 args['dataset'], args['init_cls'], args['increment'],longtail)
@@ -32,7 +34,7 @@ def _train(args):
     )
     _set_device(args)
     data_manager = DataManager( args['seed'], args['init_cls'], args['increment'],args['longtail'])
-    
+    # 自行撰寫之程式碼
     model = COIL(args)
     ## 若有訓練過模型，則將模型載入
     if args["check_point"] is not None:
