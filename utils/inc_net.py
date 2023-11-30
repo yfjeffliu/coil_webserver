@@ -11,7 +11,7 @@ def get_convnet(convnet_type, pretrained=False):
     return cosine_resnet18(pretrained=pretrained)
 
 
-
+# 參考https://github.com/zhoudw-zdw/MM21-Coil 
 class BaseNet(nn.Module):
 
     def __init__(self, convnet_type, pretrained):
@@ -62,7 +62,7 @@ class BaseNet(nn.Module):
 
 
 
-
+# 參考https://github.com/zhoudw-zdw/MM21-Coil 
 class SimpleCosineIncrementalNet(BaseNet):
 
     def __init__(self, convnet_type, pretrained):
@@ -86,19 +86,4 @@ class SimpleCosineIncrementalNet(BaseNet):
         fc = CosineLinear(in_dim, out_dim)
         return fc
 
-
-# class BiasLayer(nn.Module):
-#     def __init__(self):
-#         super(BiasLayer, self).__init__()
-#         self.alpha = nn.Parameter(torch.ones(1, requires_grad=True))
-#         self.beta = nn.Parameter(torch.zeros(1, requires_grad=True))
-
-#     def forward(self, x, low_range, high_range):
-#         ret_x = x.clone()
-#         ret_x[:, low_range:high_range] = self.alpha * \
-#             x[:, low_range:high_range] + self.beta
-#         return ret_x
-
-#     def get_params(self):
-#         return (self.alpha.item(), self.beta.item())
 
