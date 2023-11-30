@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import torch
+# 參考https://github.com/zhoudw-zdw/MM21-Coil 
 
 
 def count_parameters(model, trainable=False):
