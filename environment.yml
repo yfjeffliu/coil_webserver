@@ -53,3 +53,4 @@ dependencies:
       - urllib3==2.0.5
       - werkzeug==2.2.3
       - zipp==3.15.0
+prefix: /home/fcil/anaconda3/envs/test_env
