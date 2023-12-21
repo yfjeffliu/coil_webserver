@@ -13,5 +13,5 @@
 
 
 若有資料，請建立一個data資料夾，並把資料放入，如下圖結構
-![Alt text](image.png)
-![Alt text](image-1.png)
+![Alt text](./img/image-1.png)
+![Alt text](./img/image.png)
