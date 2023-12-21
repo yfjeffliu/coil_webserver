@@ -1,4 +1,3 @@
-import logging
 import numpy as np
 from tqdm import tqdm
 import torch
@@ -119,7 +118,7 @@ class COIL(BaseLearner):
         self._network.update_fc(self._total_classes, self.nextperiod_initialization)
         self.data_manager=data_manager
 
-        logging.info('Learning on {}-{}'.format(self._known_classes, self._total_classes))
+        print('Learning on {}-{}'.format(self._known_classes, self._total_classes))
         self.lamda = self._known_classes / self._total_classes
         # Loader
         train_dataset = data_manager.get_dataset(np.arange(self._known_classes, self._total_classes), source='train',
@@ -199,6 +198,6 @@ class COIL(BaseLearner):
                 self._cur_task, epoch+1, epochs, losses/len(train_loader), train_acc)
             prog_bar.set_description(info)
 
-        logging.info(info)
+        print(info)
 
 

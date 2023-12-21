@@ -1,7 +1,6 @@
 # 參考https://github.com/zhoudw-zdw/MM21-Coil
 # 多數函式不須使用
 import copy
-import logging
 import numpy as np
 import torch
 from torch.utils.data import DataLoader
@@ -150,7 +149,7 @@ class BaseLearner(object):
         self._network.train()
         
     def _reduce_exemplar(self, data_manager, m):
-        logging.info('Reducing exemplars...({} per classes)'.format(m))
+        print('Reducing exemplars...({} per classes)'.format(m))
         dummy_data, dummy_targets = copy.deepcopy(self._data_memory), copy.deepcopy(self._targets_memory)
         dummy_data = np.array(dummy_data).flatten()
         dummy_targets= np.array(dummy_targets).flatten()
@@ -174,7 +173,7 @@ class BaseLearner(object):
             self._class_means[class_idx, :] = mean
 
     def _construct_exemplar(self, data_manager, m):
-        logging.info('Constructing exemplars...({} per classes)'.format(m))
+        print('Constructing exemplars...({} per classes)'.format(m))
         for class_idx in range(self._known_classes, self._total_classes):
             mm = m
             data, targets, idx_dataset = data_manager.get_dataset(np.arange(class_idx, class_idx+1), source='train',

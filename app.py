@@ -3,11 +3,9 @@ from flask import Flask, request
 from flask import send_file
 from flask import Flask, render_template
 from flask import Flask, jsonify
-import base64
-import random
 import os
-import re
 import csv
+import secrets
 from datetime import datetime
 from PIL import Image
 import numpy as np
@@ -155,7 +153,8 @@ good_dict = {
 @app.route('/upup', methods=['POST'])
 def upload_delphi():
     t = datetime.now()
-    z="%.3d" % (random.randint(1,999))
+
+    z = "{:03d}".format(secrets.randbelow(999) + 1)
     d1="upimg"+t.strftime("%Y%m%d%H%M%S")+z+".jpg"
     df = pd.read_csv("./goods50.csv",encoding="cp950")
     ## 若gid不在csv檔中，則新增一筆資料，並設定圖片資料夾名稱

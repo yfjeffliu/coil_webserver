@@ -1,5 +1,4 @@
 import sys
-import logging
 import copy
 import torch
 from utils.data_manager import DataManager
@@ -24,14 +23,7 @@ def _train(args):
     longtail='Longtail' if args['longtail']==1 else 'Normal'
     logfilename = '{}_{}_{}_{}_{}_{}_{}'.format(args['seed'], args['model_name'], args['convnet_type'],
                                                 args['dataset'], args['init_cls'], args['increment'],longtail)
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s [%(filename)s] => %(message)s',
-        handlers=[
-            logging.FileHandler(filename=logfilename + '.log'),
-            logging.StreamHandler(sys.stdout)
-        ]
-    )
+    
     _set_device(args)
     data_manager = DataManager( args['seed'], args['init_cls'], args['increment'],args['longtail'])
     # 自行撰寫之程式碼

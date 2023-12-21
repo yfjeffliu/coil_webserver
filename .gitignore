@@ -3,3 +3,7 @@ data_backup_600/
 demo_bakcup/
 test.ipynb
 test.py
+__pycache__/
+convs/__pycache__/
+models/__pycache__/
+utils/__pycache__/

@@ -7,9 +7,6 @@ import torch.nn as nn
 from torch.hub import  load_state_dict_from_url
 
 
-__all__ = ['resnet50']
-
-
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
    
