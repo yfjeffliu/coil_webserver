@@ -8,11 +8,12 @@
 5. change nginx setup file by `cp nginx_setting /etc/nginx/sites-available/default`
 6. restart nginx with `sudo systemctl restart nginx.service`
 7. run `python app.py` to start the webserver
-8. follow the instruction in 設置ip以及創建apk檔說明.pdf, set ip and port according to your webserver
-9. move the apk file to your android cellphone and install it
+8. down the project file from https://reurl.cc/VN6DmY
+9. follow the instruction in 設置ip以及創建apk檔說明.pdf, set ip and port according to your webserver
+10. move the apk file to your android cellphone and install it
 
 
-10. 若有資料，請建立一個data資料夾，並把資料放入，如下圖結構
+11. 若有資料，請建立一個data資料夾，並把資料放入，如下圖結構
 
 ![Alt text](./img/image-1.png)
 
